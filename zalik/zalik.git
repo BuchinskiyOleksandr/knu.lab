@@ -1,0 +1,45 @@
+import os
+from datetime import datetime, timedelta
+
+def parse_file(file_path, value_AAA):
+    # Встановлюємо формат часу
+    time_format = "%H:%M"
+
+    # Отримуємо список всіх рядків файлу
+    with open(file_path, 'r') as file:
+        lines = file.readlines()
+
+    # Зберігаємо всі рядки, які відповідають умові
+    filtered_lines = []
+
+    # Обробляємо кожен рядок
+    for line in lines:
+        # Отримуємо час вимірювання і значення параметру
+        time_str, value_str = line.split()[:2]
+
+        # Перевіряємо, чи відповідає значення параметру умові
+        if float(value_str) > float(value_AAA):
+            # Збираємо дату і час вимірювання
+            time_obj = datetime.strptime(time_str, time_format)
+
+            # Додаємо рядок до відповіді
+            filtered_lines.append(time_obj.strftime(time_format))
+
+    return filtered_lines
+
+# Визначення шляху до файлу
+file_path = 'your_file_path_here'
+
+# Введення значення AAA
+value_AAA = input("Введіть значення AAA: ")
+
+# Отримання відповіді
+result = parse_file(file_path, value_AAA)
+
+# Виведення відповіді
+if result:
+    print("Часи вимірювання, коли значення параметру перевищує введене значення AAA:")
+    for time in result:
+        print(time)
+else:
+    print("Введений поріг не був досягнутий жодним з записів у файлі.")
